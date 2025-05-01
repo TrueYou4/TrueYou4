@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>TrueYou</title>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --text: #000000;
+      --font: 'Helvetica Neue', sans-serif;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font);
+      scroll-behavior: smooth;
+      height: 100%;
+      overflow-x: hidden;
+    }
+
+    body {
+      scroll-snap-type: y proximity;
+      overflow-y: scroll;
+    }
+
+    section {
+      height: 100vh;
+      scroll-snap-align: center;
+      scroll-snap-stop: always;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .section-content {
+      text-align: center;
+      transition: transform 0.3s ease;
+      transform: scale(0.6);
+    }
+
+    .heading {
+      font-size: 10vw;
+      font-weight: 900;
+      transition: transform 0.3s ease;
+    }
+
+    .gradient-text {
+      background: linear-gradient(90deg, #1f05b1, #7873f5, #4ade80, #05e0c3 );
+      background-size: 300% 300%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: wave 6s ease-in-out infinite;
+    }
+
+    @keyframes wave {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .details {
+      margin-top: 1.2rem;
+      font-family: 'Inter', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 400;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+      line-height: 1.6;
+      color: #000000;
+    }
+
+    @media (max-width: 768px) {
+      .heading {
+        font-size: 14vw;
+      }
+
+      .details {
+        font-size: 1.1rem;
+      }
+    }
+
+    .fade-in {
+      animation: fadeInScale 0.6s ease-out forwards;
+      opacity: 0;
+      transform: scale(0.9);
+    }
+
+    @keyframes fadeInScale {
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <section>
+    <div class="section-content">
+      <div class="heading gradient-text">TrueYou</div>
+      <div class="details">A new kind of social media — made for people who look up, not down.</div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-content">
+      <div class="heading">Live Offline</div>
+      <div class="details">Built to enhance your real life, not replace it. TrueYou is your partner in presence.</div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-content">
+      <div class="heading">Location-Based Posts</div>
+      <div class="details">Share moments only when you're really there. Geofenced content keeps everything grounded.</div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-content">
+      <div class="heading">No Likes. No Scroll.</div>
+      <div class="details">Eliminate the pressure. No dopamine traps, just real expression and time reclaimed.</div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-content">
+      <div class="heading">Your Life is the Feed</div>
+      <div class="details">What you do and where you are matter more than what’s trending.</div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-content">
+      <div class="heading">True Expression</div>
+      <div class="details">No ads. No algorithms. Just you and the people who matter.</div>
+    </div>
+  </section>
+
+  <script>
+    const sections = document.querySelectorAll("section");
+  
+    function updateScale() {
+      const windowMid = window.innerHeight / 2;
+  
+      sections.forEach(section => {
+        const content = section.querySelector('.section-content');
+        const rect = section.getBoundingClientRect();
+        const sectionMid = rect.top + rect.height / 2;
+        const distance = Math.abs(windowMid - sectionMid);
+  
+        // This defines how far away scaling starts
+        const maxDistance = window.innerHeight;
+  
+        const normalized = Math.min(distance / maxDistance, 1);
+        const scale = 1 - normalized * 0.4; // scale between 1 and 0.6
+  
+        content.style.transform = `scale(${scale})`;
+      });
+    }
+  
+    // Animate every frame to catch all scrollsnap positions
+    function animate() {
+      updateScale();
+      requestAnimationFrame(animate);
+    }
+  
+    // Start animation loop
+    animate();
+  
+    // Resize update
+    window.addEventListener('resize', updateScale);
+  </script>
+
+</footer>
+  <footer style="padding: 5rem 2rem; text-align: center;">
+    <h2 style="font-size: 2rem; font-weight: 600; margin-bottom: 1rem;">Stay in the loop</h2>
+    <p style="font-size: 1.1rem; margin-bottom: 2rem;">Be the first to know when TrueYou launches.</p>
+    <form id="interest-form" style="display: flex; flex-direction: column; align-items: center; gap: 1rem;" onsubmit="handleInterestSubmit(event)">
+      <input
+        id="email-input"
+        type="email"
+        required
+        placeholder="Your email"
+        style="padding: 0.75rem 1rem; font-size: 1rem; width: 100%; max-width: 300px; border: 1px solid #ccc; border-radius: 6px;"
+      />
+      <button
+        type="submit"
+        style="padding: 0.75rem 1.5rem; font-size: 1rem; border: none; background-color: #000; color: #fff; border-radius: 6px; cursor: pointer;"
+      >
+        Register Interest
+      </button>
+    </form>
+  </footer>
+</footer>
+<script>
+function handleInterestSubmit(event) {
+  event.preventDefault();
+  const input = document.getElementById('email-input');
+  const button = document.querySelector('#interest-form button');
+  const email = input.value;
+
+  const scriptURL = 'https://script.google.com/macros/s/AKfycbyC7OWEKLrkJWNL7RXsvngPWsIvbk6wQjxLDCJuBBSGYhd81a0VpsgEHSZCZDQIR5Iy/exec'; 
+
+  fetch(scriptURL, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: `email=${encodeURIComponent(email)}`
+  });
+
+  input.value = 'Registered!';
+  input.disabled = true;
+  input.classList.add('fade-in');
+  button.style.display = 'none';
+}
+</script>
+</body>
+</html>
