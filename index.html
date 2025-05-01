@@ -101,6 +101,16 @@
         transform: scale(1);
       }
     }
+
+    /* Mobile-specific fixes */
+    @media (max-width: 768px) {
+      .section-content {
+        transition: none;
+      }
+      .fade-in {
+        animation: none;
+      }
+    }
   </style>
 </head>
 <body>
@@ -182,7 +192,6 @@
     window.addEventListener('resize', updateScale);
   </script>
 
-</footer>
   <footer style="padding: 5rem 2rem; text-align: center;">
     <h2 style="font-size: 2rem; font-weight: 600; margin-bottom: 1rem;">Stay in the loop</h2>
     <p style="font-size: 1.1rem; margin-bottom: 2rem;">Be the first to know when TrueYou launches.</p>
@@ -202,28 +211,28 @@
       </button>
     </form>
   </footer>
-</footer>
-<script>
-function handleInterestSubmit(event) {
-  event.preventDefault();
-  const input = document.getElementById('email-input');
-  const button = document.querySelector('#interest-form button');
-  const email = input.value;
 
-  const scriptURL = 'https://script.google.com/macros/s/AKfycbyC7OWEKLrkJWNL7RXsvngPWsIvbk6wQjxLDCJuBBSGYhd81a0VpsgEHSZCZDQIR5Iy/exec'; 
+  <script>
+    function handleInterestSubmit(event) {
+      event.preventDefault();
+      const input = document.getElementById('email-input');
+      const button = document.querySelector('#interest-form button');
+      const email = input.value;
 
-  fetch(scriptURL, {
-    method: 'POST',
-    mode: 'no-cors',
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    body: `email=${encodeURIComponent(email)}`
-  });
+      const scriptURL = 'https://script.google.com/macros/s/AKfycbyC7OWEKLrkJWNL7RXsvngPWsIvbk6wQjxLDCJuBBSGYhd81a0VpsgEHSZCZDQIR5Iy/exec'; 
 
-  input.value = 'Registered!';
-  input.disabled = true;
-  input.classList.add('fade-in');
-  button.style.display = 'none';
-}
-</script>
+      fetch(scriptURL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: `email=${encodeURIComponent(email)}`
+      });
+
+      input.value = 'Registered!';
+      input.disabled = true;
+      input.classList.add('fade-in');
+      button.style.display = 'none';
+    }
+  </script>
 </body>
 </html>
