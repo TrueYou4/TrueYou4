@@ -80,28 +80,3 @@ export default async function handler(req, res) {
     return res.status(500).json({ message: "Error sending email.", error });
   }
 }
-    </body>
-  </html>`;
-
-  const response = await fetch('https://api.brevo.com/v3/smtp/email', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'api-key': process.env.BREVO_API_KEY,
-    },
-    body: JSON.stringify({
-      sender: { name: "TrueYou", email: "trueyoupro@gmail.com" },
-      to: [{ email: email, name: name }],
-      subject: "Thanks for Registering Interest!",
-      htmlContent: htmlContent,
-      // Optionally add replyTo here
-    }),
-  });
-
-  if (response.ok) {
-    return res.status(200).json({ message: "Email sent successfully!" });
-  } else {
-    const error = await response.json();
-    return res.status(500).json({ message: "Error sending email.", error });
-  }
-}
