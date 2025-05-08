@@ -220,28 +220,25 @@
       </form>
     </footer>
   </section>
-
   <script>
-    function handleInterestSubmit(event) {
-      event.preventDefault();
-      const input = document.getElementById('email-input');
-      const button = document.querySelector('#interest-form button');
-      const email = input.value;
-
-      const scriptURL = 'https://script.google.com/macros/s/AKfycbxK8XhtATJdiR7eSF9P9xAuu2hUxofRhdaRTfqytGmYqQ-pwZUlK7NHHXApseaRB-NC/exec'; 
-      
-      fetch(scriptURL, {
+    document.getElementById('register-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = e.target.email.value;
+      const name = e.target.name.value;
+  
+      const res = await fetch('/api/register', {
         method: 'POST',
-        mode: 'no-cors',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: `email=${encodeURIComponent(email)}`
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, name })
       });
-
-      input.value = 'Registered!';
-      input.disabled = true;
-      input.classList.add('fade-in');
-      button.style.display = 'none';
-    }
+  
+      const data = await res.json();
+      if (res.ok) {
+        alert("Thanks! You're on the list.");
+      } else {
+        alert("Oops: " + data.error);
+      }
+    });
   </script>
 </body>
 </html>
