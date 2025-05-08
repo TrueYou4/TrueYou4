@@ -1,30 +1,31 @@
 // /api/register.js
+// File: /api/register.js
+
 import { Resend } from 'resend';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
-    return res.status(405).json({ success: false, message: 'Method not allowed' });
+    return res.status(405).json({ success: false, error: 'Method not allowed' });
   }
 
   const { email } = req.body;
 
   if (!email || !email.includes('@')) {
-    return res.status(400).json({ success: false, message: 'Invalid email' });
+    return res.status(400).json({ success: false, error: 'Invalid email' });
   }
 
   try {
     await resend.emails.send({
-      from: 'onboarding@resend.dev',
-      to: email,
-      subject: 'Thanks for Registering!',
-      html: `<p>Thanks for signing up for <strong>TrueYou</strong>. Stay tuned!</p>`,
+      from: 'TrueYou <hello@yourdomain.com>',
+      to: 'you@yourdomain.com', // or the user if you're confirming their signup
+      subject: 'New Interest Signup',
+      text: `New signup: ${email}`
     });
 
     return res.status(200).json({ success: true });
   } catch (error) {
-    console.error(error);
-    return res.status(500).json({ success: false, message: 'Email failed to send' });
+    return res.status(500).json({ success: false, error: error.message });
   }
 }
