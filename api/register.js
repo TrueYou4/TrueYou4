@@ -1,4 +1,4 @@
-// File: /api/register.js
+// /api/register.js
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -6,11 +6,11 @@ export default async function handler(req, res) {
   }
 
   const { email } = req.body;
-  const API_KEY = process.env.BREVO_API_KEY; // Set this in Vercel > Environment Variables
-  const LIST_ID = 7; // Replace with your actual list ID
+  const API_KEY = process.env.BREVO_API_KEY;
+  const LIST_ID = 7;
 
   if (!email) {
-    return res.status(400).json({ error: 'Email is required' });
+    return res.status(400).json({ error: 'Missing email' });
   }
 
   try {
@@ -34,7 +34,7 @@ export default async function handler(req, res) {
     }
 
     return res.status(200).json({ success: true, data });
-  } catch (error) {
-    return res.status(500).json({ success: false, error: error.message });
+  } catch (err) {
+    return res.status(500).json({ success: false, error: err.message });
   }
 }
