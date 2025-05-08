@@ -183,81 +183,45 @@
       <div class="details">What you do and where you are matter more than what’s trending.</div>
     </div>
   </section>
-
-  <!-- Email Registration Section -->
   <section style="padding: 5rem 2rem;">
     <footer>
-      <h2 style="font-size: 2rem; font-weight: 600; margin-bottom: 1rem;">Stay in the loop</h2>
-      <p style="font-size: 1.1rem; margin-bottom: 2rem;">Be the first to know when TrueYou launches.</p>
-      <form id="interest-form" style="display: flex; flex-direction: column; align-items: center; gap: 1rem; max-width: 350px; width: 100%; margin: auto;">
-        <input id="email-input" type="email" required placeholder="Your email" />
-        <button type="submit">Register Interest</button>
-        <div id="form-message"></div>
-      </form>
+      <iframe
+        src="https://sibforms.com/serve/MUIFAAaZ4AhZxNo2L6WHBVJBTCfHgZPeKDtjxyn3dBgEfu5nPK7-QuHOokbI7jUGEzifHOS3-hajnr_PxZ6-5Obg3ZcuRaNkvw9Jdd9-CF-Ng-aM81RByjzwRgcVd331AlIbp4Xw0y7pLL6U9mQYcobdYOF6Xv50vL-5QjCevS7T9bzJeW1uKiimuUKRrhZAB8B0dAnFVEF4A8B0"
+        width="100%"
+        height="400"
+        frameborder="0"
+        scrolling="no"
+        style="border: none; overflow: hidden; max-width: 100%;">
+      </iframe>
     </footer>
   </section>
 
   <canvas id="bgCanvas"></canvas>
 
   <script>
-    const sections = document.querySelectorAll("section");
-
-    function updateScale() {
-      const mid = window.innerHeight / 2;
-      sections.forEach(section => {
-        const content = section.querySelector('.section-content');
-        if (!content) return;
-        const rect = section.getBoundingClientRect();
-        const sectionMid = rect.top + rect.height / 2;
-        const distance = Math.abs(mid - sectionMid);
-        const maxDistance = window.innerHeight;
-        const scale = 1 - Math.min(distance / maxDistance, 1) * 0.4;
-        content.style.transform = `scale(${scale})`;
-      });
-    }
-
-    function animate() {
-      updateScale();
-      requestAnimationFrame(animate);
-    }
-
-    animate();
-    window.addEventListener('resize', updateScale);
-
-    // Form submission handler
-    document.getElementById("interest-form").addEventListener("submit", async function (e) {
-      e.preventDefault();
-      const email = document.getElementById("email-input").value.trim();
-      const message = document.getElementById("form-message");
-
-      if (!email.includes("@")) {
-        message.textContent = "Please enter a valid email.";
-        message.style.color = "#dc2626";
-        return;
-      }
-
-      try {
-        const res = await fetch("/api/register", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email })
+      const sections = document.querySelectorAll("section");
+    
+      function updateScale() {
+        const mid = window.innerHeight / 2;
+        sections.forEach(section => {
+          const content = section.querySelector('.section-content');
+          if (!content) return;
+          const rect = section.getBoundingClientRect();
+          const sectionMid = rect.top + rect.height / 2;
+          const distance = Math.abs(mid - sectionMid);
+          const maxDistance = window.innerHeight;
+          const scale = 1 - Math.min(distance / maxDistance, 1) * 0.4;
+          content.style.transform = `scale(${scale})`;
         });
-
-        const data = await res.json();
-
-        if (data.success) {
-          message.textContent = "Thanks for signing up!";
-          message.style.color = "#4ade80";
-          document.getElementById("email-input").value = "";
-        } else {
-          message.textContent = "Something went wrong.";
-          message.style.color = "#dc2626";
-        }
-      } catch {
-        message.textContent = "Network error.";
-        message.style.color = "#dc2626";
       }
-    });
+    
+      function animate() {
+        updateScale();
+        requestAnimationFrame(animate);
+      }
+    
+      animate();
+      window.addEventListener('resize', updateScale);
   </script>
 </body>
 </html>
