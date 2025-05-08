@@ -157,12 +157,12 @@
     </div>
   </section>
 
+  <!-- Email Registration Section -->
   <section style="height: 100vh; scroll-snap-align: center; display: flex; align-items: center; justify-content: center; padding: 5rem 2rem;">
     <footer style="text-align: center;">
       <h2 style="font-size: 2rem; font-weight: 600; margin-bottom: 1rem;">Stay in the loop</h2>
       <p style="font-size: 1.1rem; margin-bottom: 2rem;">Be the first to know when TrueYou launches.</p>
-     <form id="interest-form" style="display: flex; flex-direction: column; align-items: center; gap: 1rem; max-width: 350px; width: 100%;">
-      <div id="form-message" style="height: 1.5rem; font-size: 1rem; color: #4ade80; margin-top: -0.5rem;"></div>
+      <form id="interest-form" style="display: flex; flex-direction: column; align-items: center; gap: 1rem; max-width: 350px; width: 100%;">
         <input
           id="email-input"
           type="email"
@@ -176,9 +176,13 @@
         >
           Register Interest
         </button>
+        <div id="form-message" style="height: 1.5rem; font-size: 1rem; color: #4ade80;"></div>
       </form>
     </footer>
   </section>
+
+  <!-- Optional background canvas -->
+  <canvas id="bgCanvas" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;"></canvas>
 
   <script>
     const sections = document.querySelectorAll("section");
@@ -187,6 +191,7 @@
       const windowMid = window.innerHeight / 2;
       sections.forEach(section => {
         const content = section.querySelector('.section-content');
+        if (!content) return;
         const rect = section.getBoundingClientRect();
         const sectionMid = rect.top + rect.height / 2;
         const distance = Math.abs(windowMid - sectionMid);
@@ -205,40 +210,38 @@
     animate();
     window.addEventListener('resize', updateScale);
 
-    document.getElementById('interest-form').addEventListener('submit', async (e) => {
+    // Form handler
+    document.getElementById("interest-form").addEventListener("submit", async function (e) {
       e.preventDefault();
-      const email = document.getElementById('email-input').value;
-      const name = "Early Access User";
-      const messageBox = document.getElementById('form-message');
-      const button = e.target.querySelector("button");
-    
-      messageBox.textContent = "";
-      button.disabled = true;
-      button.innerText = "Submitting...";
-    
+      const email = document.getElementById("email-input").value;
+      const message = document.getElementById("form-message");
+
+      if (!email || !email.includes('@')) {
+        message.textContent = "Please enter a valid email.";
+        message.style.color = "#dc2626"; // red
+        return;
+      }
+
       try {
-        const res = await fetch('/api/register', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email, name })
+        const res = await fetch("/api/register", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email })
         });
-    
+
         const data = await res.json();
-    
-        if (res.ok) {
-          messageBox.style.color = "#4ade80";
-          messageBox.textContent = "Thanks! You're on the list.";
-          e.target.reset();
+
+        if (data.success) {
+          message.textContent = "Thanks for signing up!";
+          message.style.color = "#4ade80"; // green
+          document.getElementById("email-input").value = "";
         } else {
-          messageBox.style.color = "#ef4444";
-          messageBox.textContent = data.error?.message || "Oops, something went wrong.";
+          message.textContent = "Something went wrong.";
+          message.style.color = "#dc2626";
         }
       } catch (err) {
-        messageBox.style.color = "#ef4444";
-        messageBox.textContent = "Network error. Please try again.";
-      } finally {
-        button.disabled = false;
-        button.innerText = "Register Interest";
+        message.textContent = "Network error.";
+        message.style.color = "#dc2626";
       }
     });
   </script>
