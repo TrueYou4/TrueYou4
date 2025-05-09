@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>TrueYou</title>
   <style>
     :root {
@@ -23,12 +24,14 @@
       color: var(--text);
       font-family: var(--font);
       scroll-behavior: smooth;
-      overflow-x: hidden;
+      overflow: hidden;
     }
 
-    body {
+    main {
+      height: 100vh;
       scroll-snap-type: y mandatory;
-      overflow-y: scroll;
+      overflow-y: auto;
+      overflow-x: hidden;
     }
 
     section {
@@ -42,8 +45,10 @@
 
     .section-content {
       text-align: center;
-      transition: transform 0.3s ease;
       transform: scale(0.6);
+      transition: transform 0.3s ease;
+      padding: 0 1.5rem;
+      width: 100%;
     }
 
     .heading {
@@ -65,69 +70,39 @@
       50% { background-position: 100% 50%; }
     }
 
+    ::selection {
+      background: transparent;
+      color: #f2a311;
+    }
+
     .details {
       margin-top: 1.2rem;
-      font-family: 'Inter', sans-serif;
       font-size: 1.5rem;
       font-weight: 400;
       max-width: 600px;
       margin-inline: auto;
       line-height: 1.6;
+      font-family: 'Inter', sans-serif;
     }
 
     @media (max-width: 768px) {
       .heading { font-size: 14vw; }
       .details { font-size: 1.1rem; }
       .section-content {
-        padding: 0 1.5rem;
         transform: scale(1);
       }
     }
-
-    .fade-in {
-      animation: fadeInScale 0.6s ease-out forwards;
-      opacity: 0;
-      transform: scale(0.9);
+    .section-content {
+      position: relative;
+      z-index: 1;
     }
 
-    @keyframes fadeInScale {
-      to {
-        opacity: 1;
-        transform: scale(1);
-      }
-    }
-
-    footer {
-      text-align: center;
-    }
-
-    input, button {
-      font-family: inherit;
-    }
-
-    input[type="email"] {
-      padding: 0.75rem 1rem;
-      font-size: 1rem;
+    iframe {
       width: 100%;
-      max-width: 300px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-    }
-
-    button {
-      padding: 0.75rem 1.5rem;
-      font-size: 1rem;
+      max-width: 540px;
+      height: 400px;
       border: none;
-      background-color: #000;
-      color: #fff;
-      border-radius: 6px;
-      cursor: pointer;
-    }
-
-    #form-message {
-      height: 1.5rem;
-      font-size: 1rem;
-      margin-top: 0.5rem;
+      overflow: hidden;
     }
 
     canvas#bgCanvas {
@@ -141,87 +116,78 @@
   </style>
 </head>
 <body>
-
-  <section>
-    <div class="section-content">
-      <div class="heading gradient-text">TrueYou</div>
-      <div class="details">A new kind of social media — made for people who want to look up, not down.</div>
-    </div>
-  </section>
-
-  <section>
-    <div class="section-content">
-      <div class="heading">Authentic Connection</div>
-      <div class="details">Connect with people as they are, not as they appear.</div>
-    </div>
-  </section>
-
-  <section>
-    <div class="section-content">
-      <div class="heading">Genuine Posts</div>
-      <div class="details">Share moments that actually happen. Location data validates posts keeping everything authentic.</div>
-    </div>
-  </section>
-
-  <section>
-    <div class="section-content">
-      <div class="heading">Live Offline</div>
-      <div class="details">Enhance your real life, don't replace it. TrueYou keeps you fully present in every moment.</div>
-    </div>
-  </section>
-
-  <section>
-    <div class="section-content">
-      <div class="heading">No Likes. No Scroll.</div>
-      <div class="details">Eliminate the pressure. No dopamine traps, just real expression and time reclaimed.</div>
-    </div>
-  </section>
-
-  <section>
-    <div class="section-content">
-      <div class="heading">Your Life is the Feed</div>
-      <div class="details">What you do and where you are matter more than what’s trending.</div>
-    </div>
-  </section>
-  <section style="padding: 5rem 2rem;">
-    <footer>
-      <iframe
-        src="https://sibforms.com/serve/MUIFAAaZ4AhZxNo2L6WHBVJBTCfHgZPeKDtjxyn3dBgEfu5nPK7-QuHOokbI7jUGEzifHOS3-hajnr_PxZ6-5Obg3ZcuRaNkvw9Jdd9-CF-Ng-aM81RByjzwRgcVd331AlIbp4Xw0y7pLL6U9mQYcobdYOF6Xv50vL-5QjCevS7T9bzJeW1uKiimuUKRrhZAB8B0dAnFVEF4A8B0"
-        width="100%"
-        height="400"
-        frameborder="0"
-        scrolling="no"
-        style="border: none; overflow: hidden; max-width: 100%;">
-      </iframe>
-    </footer>
-  </section>
-
   <canvas id="bgCanvas"></canvas>
 
-  <script>
-      const sections = document.querySelectorAll("section");
-    
-      function updateScale() {
-        const mid = window.innerHeight / 2;
-        sections.forEach(section => {
-          const content = section.querySelector('.section-content');
-          if (!content) return;
-          const rect = section.getBoundingClientRect();
-          const sectionMid = rect.top + rect.height / 2;
-          const distance = Math.abs(mid - sectionMid);
-          const maxDistance = window.innerHeight;
-          const scale = 1 - Math.min(distance / maxDistance, 1) * 0.4;
-          content.style.transform = `scale(${scale})`;
-        });
-      }
-    
-      function animate() {
-        updateScale();
-        requestAnimationFrame(animate);
-      }
-    
-      animate();
-      window.addEventListener('resize', updateScale);
+  <main>
+    <section>
+      <div class="section-content">
+        <h1 class="heading gradient-text">TrueYou</h1>
+        <p class="details">A new kind of social media — made for people who want to look up, not down.</p>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-content">
+        <h2 class="heading">Authentic Connection</h2>
+        <p class="details">Connect with people as they are, not as they appear.</p>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-content">
+        <h2 class="heading">Genuine Posts</h2>
+        <p class="details">Share moments that actually happen. Location data validates posts keeping everything authentic.</p>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-content">
+        <h2 class="heading">Live Offline</h2>
+        <p class="details">Enhance your real life, don't replace it. TrueYou keeps you fully present in every moment.</p>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-content">
+        <h2 class="heading">No Likes. No Scroll.</h2>
+        <p class="details">Eliminate the pressure. No dopamine traps, just real expression and time reclaimed.</p>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-content">
+        <iframe src="https://sibforms.com/serve/MUIFAEufshF55hIF7F6FuCLqOctMUmZ6wqnXDREPJ7JvG9Fk6QRp5e6mUkRwh__hjnfUO4Wu0HkfwkFiVxoW6S2cDYziySHx1n8m-5RjWRoxNvMMpoFVvhVPVK0ysAzxI6N9gJd6nDvfMQet06fOaJvaHUYo5gL5PcvLE8Y8h2zc6fTdercEai-n2tHJZbkixeDsBu16JlqOw34B"
+                scrolling="no"
+                allowfullscreen>
+        </iframe>
+      </div>
+    </section>
+  </main>
+
+  <script defer>
+    const sections = document.querySelectorAll("section");
+
+    function updateScale() {
+      const mid = window.innerHeight / 2;
+      sections.forEach(section => {
+        const content = section.querySelector('.section-content');
+        if (!content) return;
+        const rect = section.getBoundingClientRect();
+        const sectionMid = rect.top + rect.height / 2;
+        const distance = Math.abs(mid - sectionMid);
+        const maxDistance = window.innerHeight;
+        const scale = 1 - Math.min(distance / maxDistance, 1) * 0.4;
+        content.style.transform = `scale(${scale})`;
+      });
+    }
+
+    function animate() {
+      updateScale();
+      requestAnimationFrame(animate);
+    }
+
+    animate();
+    window.addEventListener('resize', updateScale);
   </script>
 </body>
 </html>
